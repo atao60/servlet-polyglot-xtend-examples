@@ -8,13 +8,14 @@ The web application path is "/webapp/hello".
 The documentation is available from "/doc", either pure static HTML pages or JSP pages.
 
 Error management:
+
 * any access to "/" or "/webapp" will be redirected to the web application.
 * any access to an unexpected url under "/webapp/hello" will be redirected to a customized 404 Error page
 * any other unexpected access will go to the standard jetty error page.
 
 Use Polyglot Maven with Groovy as build language.
 
-Now jetty:run can catch the servlets annotated with @WebServlet.
+Now *jetty:run* can catch the servlets annotated with @WebServlet.
 
 Changes
 -----
@@ -91,18 +92,20 @@ Under Eclipse:
 To use Maven Polyglot with Groovy as build language:
 
 * Maven 3.3.1 & +
-* add .mvn/extensions.xml
-<?xml version="1.0" encoding="UTF-8"?>
-<extensions>
-    <extension>
-        <groupId>io.takari.polyglot</groupId>
-        <artifactId>polyglot-groovy</artifactId>
-        <version>0.1.8</version>
-    </extension>
-</extensions>
-* create pom.groovy
+* add .mvn/extensions.xml   
 
-* Under [Eclipse Luna](https://projects.eclipse.org/releases/luna), [m2e](http://eclipse.org/m2e/) is not aware of [Polyglot](https://github.com/takari/maven-polyglot) yet. At the moment (m2e v. 1.5.1), the only workaround is to use JBoss Tools [m2e-polyglot-poc](https://github.com/jbosstools/m2e-polyglot-poc). This tool automatically generates pom.xml files from the Polyglot ones.
+`        <?xml version="1.0" encoding="UTF-8"?>`  
+`        <extensions>`  
+`            <extension>`  
+`                <groupId>io.takari.polyglot</groupId>`  
+`                <artifactId>polyglot-groovy</artifactId>`  
+`                <version>0.1.8</version>`  
+`            </extension>`  
+`        </extensions>`  
+
+* create a pom.groovy file
+
+Under [Eclipse Luna](https://projects.eclipse.org/releases/luna), [m2e](http://eclipse.org/m2e/) is not aware of [Polyglot](https://github.com/takari/maven-polyglot) yet. At the moment (m2e v. 1.5.1), the only workaround is to use JBoss Tools [m2e-polyglot-poc](https://github.com/jbosstools/m2e-polyglot-poc). This tool automatically generates pom.xml files from the Polyglot ones.
 
 > Note. This tool requires that a pom.xml file is present before editing the polyglot pom file. The pom.xml must be valid with at least a GAV, even if with non empty arbitrary values.  
 
@@ -112,27 +115,32 @@ With an existing Maven project, the most straightforward way to start is to get 
 
 > Note. Under Eclipse, each Maven Build launch configuration has to specify:
 
-* on the tab "Main", Maven Runtime: `MAVEN (External {your maven path} {3.3.1 or above})`
-* on the tab "JRE", VM Arguments: `-Dmaven.multiModuleProjectDirectory=`
+>* on the tab "Main", Maven Runtime: `MAVEN (External {your maven path} {3.3.1 or above})`
+>* on the tab "JRE", VM Arguments: `-Dmaven.multiModuleProjectDirectory=`
 
 Running
 -----
 
-$ cd <project path>
-$ mvn clean jetty:run
-$ curl localhost:7080/webapp/hello
-<h1>Hello from annotated HelloServlet.</h1>
+With *jetty-maven-plugin*:
 
+        $ cd <project path>
+        $ mvn clean jetty:run
+        $ curl localhost:7080/webapp/hello
+        <h1>Hello from annotated HelloServlet.</h1>
 
-$ cd <project path>
-$ mvn clean compile antrun:run -Dlauncher
-$ curl localhost:8090
-<h1>Hello from annotated HelloServlet.</h1>
+With *maven-antrun-plugin* and the launcher:
 
-$ cd <project path>
-$ mvn clean package antrun:run -Dstandalone
-$ curl localhost:8090
-<h1>Hello from annotated HelloServlet.</h1>
+        $ cd <project path>
+        $ mvn clean compile antrun:run -Dlauncher
+        $ curl localhost:8090
+        <h1>Hello from annotated HelloServlet.</h1>
+
+With *maven-antrun-plugin* and the runnable war:
+
+        $ cd <project path>
+        $ mvn clean package antrun:run -Dstandalone
+        $ curl localhost:8090
+        <h1>Hello from annotated HelloServlet.</h1>
 
 References
 -----
