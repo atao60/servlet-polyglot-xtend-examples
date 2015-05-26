@@ -81,6 +81,11 @@ Add some JSP content.
 References
 -------
 
+Start with:
+>Jetty Development Guide - Chapter 25. Embedding - Embedding Jetty
+>http://www.eclipse.org/jetty/documentation/9.2.10.v20150310/embedding-jetty.html
+
+
 Polyglot but with various languages under the umbrella of the JVM:
 
 >vakuum/polyglot-java  
