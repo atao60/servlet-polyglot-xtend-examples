@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+    xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    
+    <groupId>servlet-polyglot-xtend-examples</groupId>
+    <artifactId>legacy-simplest-server</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>war</packaging>
+
+    <properties>
+    
+        <!-- Project parameters -->
+        <root-name>servlet-polyglot-xtend</root-name>
+
+        <web.port>7080</web.port>
+        <main.class>popsuite.bootstrap.jetty.Launcher</main.class>
+        <war.runnable.classifier>standalone</war.runnable.classifier>
+
+        <!-- JVM Management -->
+
+        <project.jdk.version>1.7</project.jdk.version>
+        <project.encoding>UTF-8</project.encoding>
+
+        <project.build.sourceEncoding>${project.encoding}</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>${project.encoding}</project.reporting.outputEncoding>
+
+        <maven.compiler.source>${project.jdk.version}</maven.compiler.source>
+        <maven.compiler.target>${project.jdk.version}</maven.compiler.target>
+        <maven.compiler.compilerVersion>${project.jdk.version}</maven.compiler.compilerVersion>
+        <maven.compiler.fork>true</maven.compiler.fork>
+        <maven.compiler.verbose>true</maven.compiler.verbose>
+        <maven.compiler.optimize>true</maven.compiler.optimize>
+        <maven.compiler.debug>true</maven.compiler.debug>
+
+        <!-- Maven and Plugin Management -->
+        <maven.minimal.version>3.1</maven.minimal.version>
+
+        <ant.maven.version>1.8</ant.maven.version>
+        <spring.boot.maven.version>1.2.3.RELEASE</spring.boot.maven.version>
+
+        <build.helper.maven.version>1.9.1</build.helper.maven.version>
+        <enforcer.maven.version>1.4</enforcer.maven.version>
+        
+        <!-- used with jetty:run -->
+        <compiler.maven.version>3.3</compiler.maven.version>
+        <clean.maven.version>2.6.1</clean.maven.version>
+        <resources.maven.version>2.7</resources.maven.version>
+        
+        <!-- used when generating a war file -->
+        <surefire.maven.version>2.18.1</surefire.maven.version>        
+        <war.maven.version>2.6</war.maven.version>
+        
+        <!-- other plugins -->
+        <install.maven.version>2.4</install.maven.version>        
+        <deploy.maven.version>2.7</deploy.maven.version>
+        
+        <!-- Dependency Management -->
+
+        <javax.servlet.version>3.1.0</javax.servlet.version>
+        <jetty.version>9.2.10.v20150310</jetty.version>
+
+    </properties>
+    
+    <dependencies>
+ 
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>${javax.servlet.version}</version>
+            <scope>provided</scope>
+        </dependency>
+     
+        <!-- Standalone application -->
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-server</artifactId>
+            <version>${jetty.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <artifactId>maven-enforcer-plugin</artifactId>
+            </plugin>
+        </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${compiler.maven.version}</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>${clean.maven.version}</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>${resources.maven.version}</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${surefire.maven.version}</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <version>${war.maven.version}</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-install-plugin</artifactId>
+                    <version>${install.maven.version}</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>${deploy.maven.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>build-helper-maven-plugin</artifactId>
+                    <version>${build.helper.maven.version}</version>
+                    <executions>
+                        <execution>
+                            <id>get-maven-version</id>
+                            <goals>
+                                <goal>maven-version</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-enforcer-plugin</artifactId>
+                    <version>${enforcer.maven.version}</version>
+                    <executions>
+                        <execution>
+                            <id>enforce-versions</id>
+                            <goals>
+                                <goal>enforce</goal>
+                            </goals>
+                            <configuration>
+                                <fail>true</fail>
+                                <rules>
+                                    <requireMavenVersion>
+                                        <version>${maven.minimal.version}</version>
+                                        <message><![CDATA[[ERROR] OLD MAVEN [${maven.version}] in use. 
+                                            Maven ${maven.minimal.version} or newer is required.]]>
+                                        </message>
+                                    </requireMavenVersion>
+                                    <requireJavaVersion>
+                                        <version>${project.jdk.version}</version>
+                                        <message><![CDATA[[ERROR] OLD JDK [${java.version}] in use. 
+                                            JDK ${project.jdk.version} or newer is required.]]>
+                                        </message>
+                                    </requireJavaVersion>
+                                    <requirePluginVersions>
+                                        <banLatest>true</banLatest>
+                                        <banRelease>true</banRelease>
+                                        <banSnapshots>true</banSnapshots>
+                                        <unCheckedPluginList>
+                                            org.apache.maven.plugins:maven-site-plugin
+                                        </unCheckedPluginList>
+                                    </requirePluginVersions>
+                                    <bannedDependencies>
+                                        <searchTransitive>true</searchTransitive>
+                                        <excludes>
+                                            <exclude>commons-logging</exclude>
+                                            <exclude>log4j</exclude>
+                                            <exclude>org.apache.logging.log4j</exclude>
+                                        </excludes>
+                                    </bannedDependencies>
+                                </rules>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
+    </build>
+
+    <profiles>
+        <profile>
+            <id>launcher</id>
+            <activation>
+                <property>
+                    <name>launcher</name>
+                </property>
+            </activation>
+            <build>
+                <resources>
+                    <resource>
+                        <directory>src/main/resources</directory>
+                    </resource>
+                    <resource>
+                        <directory>src/main/webapp</directory>
+                    </resource>
+                </resources>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <version>${ant.maven.version}</version>
+                        <configuration>
+                            <target>
+                                <java
+                                    classname="${main.class}"
+                                    fork="true">
+                                    <classpath refid="maven.compile.classpath" />
+                                </java>
+                            </target>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>standalone</id>
+            <activation>
+                <property>
+                    <name>standalone</name>
+                </property>
+            </activation>
+            <build>
+                <finalName>${root.name}-${project.artifactId}</finalName>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-war-plugin</artifactId>
+                        <configuration>
+                            <failOnMissingWebXml>false</failOnMissingWebXml>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                        <version>${spring.boot.maven.version}</version>
+                        <configuration>
+                            <classifier>${war.runnable.classifier}</classifier>
+                            <mainclass>${main.class}</mainclass>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>package-runable-war</id>
+                                <goals>
+                                    <goal>repackage</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <version>${ant.maven.version}</version>
+                        <configuration>
+                            <target>
+                                <java
+                                    jar="target/${project.build.finalName}-${war.runnable.classifier}.war"
+                                    fork="true" />
+                            </target>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+    
+</project>
