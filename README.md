@@ -82,14 +82,12 @@ References
 -------
 
 Start with:
-
->Jetty Development Guide - Chapter 25. Embedding - Embedding Jetty
->http://www.eclipse.org/jetty/documentation/9.2.10.v20150310/embedding-jetty.html
+>[Jetty Development Guide - Chapter 25. Embedding - Embedding Jetty](http://www.eclipse.org/jetty/documentation/9.2.10.v20150310/embedding-jetty.html)
 
 
 Polyglot but with various languages under the umbrella of the JVM:
 
->vakuum/polyglot-java  
+>[vakuum/polyglot-java](https://github.com/vakuum/polyglot-java)  
 >A demonstration on how to integrate different JVM languages into a multi-module Maven build.  
->https://github.com/vakuum/polyglot-java  
+ 
 
